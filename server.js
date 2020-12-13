@@ -14,7 +14,15 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/userdb", { useNewUrlParser: true });
+mongoose.connect(
+  process.env.MONGODB_URI || 'mongodb://localhost/fitness_trackerdb',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+);
 
 app.get("/", (req, res) => {
   res.send("index.html");
@@ -33,3 +41,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
+
+mongodb+srv://myUser:bVyWdPHRjLUcm97@cluster0.f4l70.mongodb.net/fitness_trackerdb?retryWrites=true&w=majority 
