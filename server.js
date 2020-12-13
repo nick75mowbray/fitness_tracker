@@ -82,3 +82,6 @@ app.post("/api/workouts", ({ body }, res) => {
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
+
+//mongodb+srv://myUser:bVyWdPHRjLUcm97@cluster0.f4l70.mongodb.net/fitness_trackerdb?retryWrites=true&w=majority
+
