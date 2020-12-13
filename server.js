@@ -55,6 +55,20 @@ app.get("/api/workouts", (req, res) => {
       res.json(doc);
     })
 });
+
+// add new exercise 
+app.post("/api/workouts", ({ body }, res) => {
+  db.Workout.create(
+    {body},
+    ).then(dbWorkout => {
+      console.log("db workout" + dbWorkout);
+    })
+    .catch(({message}) => {
+      console.log(message);
+    });
+});
+
+
 // app.post("/submit", ({ body }, res) => {
 //   User.create(body)
 //     .then(dbUser => {
