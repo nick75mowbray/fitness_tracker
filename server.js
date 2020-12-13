@@ -31,19 +31,19 @@ mongooseConnection.once('open', function() {
 });
 
 app.get("/", (req, res) => {
-  res.send("index.html");
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get("/stats", (req, res) => {
-  res.send("stats.html");
+  res.sendFile(path.join(__dirname + '/stats.html'));
 });
 
 app.get("/exercise?", (req, res) => {
-  res.send("exercise.html");
+  res.sendFile(path.join(__dirname + '/exercise.html'));
 });
 
 app.get("/exercise", (req, res) => {
-  res.send("exercise.html");
+  res.sendFile(path.join(__dirname + '/exercise.html'));
 });
 
 // get last workout
