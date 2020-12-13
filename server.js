@@ -1,10 +1,10 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const db = require("./models");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
-// const User = require("./userModel.js");
 const app = express();
 
 app.use(logger("dev"));
@@ -24,10 +24,37 @@ mongoose.connect(
   }
 );
 
+const mongooseConnection = mongoose.connection;
+mongooseConnection.on('error', console.error.bind(console, 'connection error:'));
+mongooseConnection.once('open', function() {
+  console.log("connected to mongoosedb!");
+});
+
 app.get("/", (req, res) => {
   res.send("index.html");
 });
 
+app.get("/stats", (req, res) => {
+  res.send("stats.html");
+});
+
+app.get("/exercise?", (req, res) => {
+  res.send("exercise.html");
+});
+
+app.get("/exercise", (req, res) => {
+  res.send("exercise.html");
+});
+
+// get last workout
+app.get("/api/workouts", (req, res) => {
+  db.Workout.findOne(
+    {},
+    {sort: 'day'},
+    function(err, doc){
+      res.json(doc);
+    })
+});
 // app.post("/submit", ({ body }, res) => {
 //   User.create(body)
 //     .then(dbUser => {
