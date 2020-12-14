@@ -37,15 +37,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/stats", function(req, res){
-  res.sendFile(path.join(__dirname + '/stats.html'));
+  res.sendFile(path.join(__dirname + '/public/stats.html'));
 });
 
 app.get("/exercise?", (req, res) => {
-  res.sendFile(path.join(__dirname + '/exercise.html'));
+  res.sendFile(path.join(__dirname + '/public/exercise.html'));
 });
 
 app.get("/exercise", (req, res) => {
-  res.sendFile(path.join(__dirname, '/exercise.html'));
+  res.sendFile(path.join(__dirname, '/public/exercise.html'));
 });
 
 // get last workout
@@ -59,7 +59,7 @@ app.get("/api/workouts", (req, res) => {
 });
 
 // get workouts in range
-app.get("/api/workouts", (req, res) => {
+app.get("/api/workouts/range", (req, res) => {
   db.Workout.find(
     {},
     function(err, doc){
@@ -80,17 +80,20 @@ app.post("/api/workouts", ({ body }, res) => {
     res.end();
 });
 
-// // add new exercise 
-// app.put("/api/workouts", ({ body }, res) => {
-//   db.Workout.create(
-//     {body},
-//     ).then(dbWorkout => {
-//       console.log("db workout" + dbWorkout);
-//     })
-//     .catch(({message}) => {
-//       console.log(message);
-//     });
-// });
+// add new exercise 
+app.put("/api/workouts/:id", (req, res) => {
+  const body = req.body;
+  console.log("body", body);
+  console.log("id?" + JSON.stringify(req.params) );
+  // db.Workout.findByIdAndUpdate(
+  //   {_id: ObjectId(body)},
+  //   ).then(dbExercise => {
+  //     console.log("db excercise" + dbExercise);
+  //   })
+  //   .catch(({message}) => {
+  //     console.log(message);
+  //   });
+});
 
 
 app.listen(PORT, () => {
