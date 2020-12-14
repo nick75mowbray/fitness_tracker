@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const db = require("./models");
+const path = require('path');
 
 const PORT = process.env.PORT || 3002;
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static("public"));
+
 
 mongoose.connect(
   process.env.MONGODB_URI || 'mongodb://localhost/fitness_trackerdb',
@@ -34,7 +36,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get("/stats", (req, res) => {
+app.get("/stats", function(req, res){
   res.sendFile(path.join(__dirname + '/stats.html'));
 });
 
@@ -43,7 +45,7 @@ app.get("/exercise?", (req, res) => {
 });
 
 app.get("/exercise", (req, res) => {
-  res.sendFile(path.join(__dirname + '/exercise.html'));
+  res.sendFile(path.join(__dirname, '/exercise.html'));
 });
 
 // get last workout
@@ -56,7 +58,16 @@ app.get("/api/workouts", (req, res) => {
     })
 });
 
-// add new exercise 
+// get workouts in range
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find(
+    {},
+    function(err, doc){
+      res.json(doc);
+    })
+});
+
+// add new workout 
 app.post("/api/workouts", ({ body }, res) => {
   db.Workout.create(
     {body},
@@ -66,18 +77,21 @@ app.post("/api/workouts", ({ body }, res) => {
     .catch(({message}) => {
       console.log(message);
     });
+    res.end();
 });
 
-
-// app.post("/submit", ({ body }, res) => {
-//   User.create(body)
-//     .then(dbUser => {
-//       res.json(dbUser);
+// // add new exercise 
+// app.put("/api/workouts", ({ body }, res) => {
+//   db.Workout.create(
+//     {body},
+//     ).then(dbWorkout => {
+//       console.log("db workout" + dbWorkout);
 //     })
-//     .catch(err => {
-//       res.json(err);
+//     .catch(({message}) => {
+//       console.log(message);
 //     });
 // });
+
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
