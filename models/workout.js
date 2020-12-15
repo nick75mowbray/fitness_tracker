@@ -48,24 +48,6 @@ const WorkoutSchema = new Schema({
   
 });
 
-// Create a virtual property `totalDuration` with a getter and setter.
-WorkoutSchema.virtual('totalDuration')
-.get(function(){
-  let duration = 0;
-  this.forEach(exercise => {
-    duration+=exercise.duration;
-  })
-  return duration;
-})
-.set(function(){
-  let duration = 0;
-  this.forEach(exercise => {
-    duration+=exercise.duration;
-  })
-  return duration;
-})
- 
-
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
 module.exports = Workout;
