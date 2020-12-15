@@ -47,11 +47,12 @@ const db = require("../models");
       {_id: workoutId},{$push:{exercises: body}}
       ).then(dbExercise => {
         console.log("db excercise" + dbExercise);
+        res.json(dbExercise);
       })
-      .catch(({message}) => {
-        console.log(message);
+      .catch(err => {
+        res.status(400).json(err);
       });
-      res.end();
+      
   });
 
 module.exports = router;
