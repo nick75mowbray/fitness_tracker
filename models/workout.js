@@ -23,8 +23,7 @@ const WorkoutSchema = new Schema({
     duration: {
       type: Number,
       // required: true,
-      min: 0,
-      default: 1
+      min: 0
     },
     // resistance
     weight: {
