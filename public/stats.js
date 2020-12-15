@@ -192,8 +192,8 @@ function duration(data) {
   let durations = [];
 
   data.forEach(workout => {
-    workout.exercises.forEach(exercises => {
-      durations.push(exercises.duration);
+    workout.exercises.forEach(exercise => {
+      durations.push(exercise.duration);
     });
   });
 
