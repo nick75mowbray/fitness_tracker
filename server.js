@@ -3,11 +3,13 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const db = require("./models");
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 3002;
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
@@ -32,69 +34,24 @@ mongooseConnection.once('open', function() {
   console.log("connected to mongoosedb!");
 });
 
+// routes
+app.use(require("./routes/api.js"));
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
-
-app.get("/stats", function(req, res){
-  res.sendFile(path.join(__dirname + '/public/stats.html'));
-});
-
-app.get("/exercise?", (req, res) => {
-  res.sendFile(path.join(__dirname + '/public/exercise.html'));
-});
-
-app.get("/exercise", (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/exercise.html'));
-});
-
-// get last workout
-app.get("/api/workouts", (req, res) => {
-  db.Workout.findOne(
-    {},
-    {sort: 'day'},
-    function(err, doc){
-      res.json(doc);
-    })
-});
-
-// get workouts in range
-app.get("/api/workouts/range", (req, res) => {
-  db.Workout.find(
-    {},
-    function(err, doc){
-      res.json(doc);
-    })
-});
-
-// add new workout 
-app.post("/api/workouts", ({ body }, res) => {
-  db.Workout.create(
-    {body},
-    ).then(dbWorkout => {
-      console.log("db workout" + dbWorkout);
-    })
-    .catch(({message}) => {
-      console.log(message);
-    });
-    res.end();
-});
-
-// add new exercise 
-app.put("/api/workouts/:id", (req, res) => {
-  const body = req.body;
-  console.log("body", body);
-  console.log("id?" + JSON.stringify(req.params) );
-  // db.Workout.findByIdAndUpdate(
-  //   {_id: ObjectId(body)},
-  //   ).then(dbExercise => {
-  //     console.log("db excercise" + dbExercise);
-  //   })
-  //   .catch(({message}) => {
-  //     console.log(message);
-  //   });
-});
-
+    res.sendFile(path.join(__dirname + '/index.html'));
+  });
+  
+  app.get("/stats", function(req, res){
+    res.sendFile(path.join(__dirname + '/public/stats.html')); 
+  });
+  
+  app.get("/exercise?", (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/exercise.html'));
+  });
+  
+  app.get("/exercise", (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/exercise.html'));
+  });
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);

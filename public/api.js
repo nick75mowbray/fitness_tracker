@@ -3,12 +3,15 @@ const API = {
     let res;
     try {
       res = await fetch("/api/workouts");
+      console.log(`res in getLastWorkout ${JSON.stringify(res)}`);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     const json = await res.json();
+    console.log(`json in get last workout ${JSON.stringify(json)}`);
 
-    return json[json.length - 1];
+    // return json[json.length - 1];
+    return json;
   },
   async addExercise(data) {
     const id = location.search.split("=")[1];
@@ -42,3 +45,5 @@ const API = {
     return json;
   },
 };
+
+
